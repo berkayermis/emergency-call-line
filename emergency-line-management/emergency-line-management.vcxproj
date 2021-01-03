@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="emergency-line-management.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="data.csv" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
