@@ -6,7 +6,7 @@
 using namespace std;
 
 /*
-	Information of denunciations struct
+	Information of denunciations struct hellö
 */
 struct information {
 	string address,detail,name;
