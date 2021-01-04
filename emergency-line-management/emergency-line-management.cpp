@@ -13,11 +13,15 @@ struct information {
 };
 
 /*
-	Fire department and id creator prototype functions
+	Prototype functions
 */
-void fireMenu(fstream&);
+void addFire(fstream&);
+int selectDepartment(fstream&);
 int idCreator();
 
+/*
+	Main function consists all departments processes itself
+*/
 int main()
 {
 	/*
@@ -26,35 +30,15 @@ int main()
 	fstream data;
 	data.open("data.csv", ios::out | ios::app);
 
-	int choice;
-	//Main menu
-main:
-	cout << "Welcome to Emergency Call Lines" << endl;
-	cout << "1 >> Emergency" << endl;
-	cout << "2 >> Police" << endl;
-	cout << "3 >> Fire Department" << endl;
-	cout << "4 >> Veterinary service" << endl;
-	cout << "5 >> Police" << endl;
-	cout << "6 >> Exit Program" << endl;
+	selectDepartment(data); //this function allows user to select department
 
-a:
-	cout << "Enter your choice: ";
-	cin >> choice;
-	if (choice > 6 || choice < 1) {
-		cout << "Invalid Choice\n";
-		cout << "Try again...........\n\n";
-		goto a;
-	}
-	if (choice == 3) {
-		fireMenu(data); //Fire department usage
-	}
 	data.close();
 	return 0; 
 }
 
 
-//Fire department menu
-void fireMenu(fstream& file) {
+// ADD function allows user to add a new denunciation to Emergency Call System
+void addFire(fstream& file) {
 
 f:
 	int fireChoice,id;
@@ -116,3 +100,35 @@ int idCreator()
 	return lineNo;
 }
 
+/*
+	SELECT function allows user to select department
+*/
+int selectDepartment(fstream& data) {
+	int choice;
+
+	//Main menu of program
+main:
+	cout << "Welcome to Emergency Call Lines" << endl;
+	cout << "1 >> Emergency" << endl;
+	cout << "2 >> Police" << endl;
+	cout << "3 >> Fire Department" << endl;
+	cout << "4 >> Veterinary Service" << endl;
+	cout << "9 >> Exit Program" << endl << endl;
+	cout << "Enter your choice: ";
+	cin >> choice;
+	if (choice > 9 || choice < 1 || (choice>4 && choice <9)) {
+		cout << "Invalid Choice\n";
+		cout << "Try again...........\n\n";
+		goto main;
+	}
+	else if (choice == 1) { //addEmergency()
+	}
+	else if (choice == 2) { //addPolice()
+	}	
+	else if (choice == 3) { addFire(data); //Fire department usage 
+	}
+	else if (choice == 4) { //addVeterinary()
+	}
+	else if (choice == 9) { return 0; 
+	}
+}
