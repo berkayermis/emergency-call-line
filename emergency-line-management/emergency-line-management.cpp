@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <string>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -45,10 +46,10 @@ f:
 	information fireInfo;
 	cout << "1 >> Emergency fire notice " << endl;
 	cout << "2 >> Forest fire notice" << endl;
-
 	cout << "Enter your choice: ";
 	cin >> fireChoice;
-	
+	system("CLS");
+
 	if (fireChoice > 2 || fireChoice < 1) {
 		cout << "Invalid Choice\n";
 		cout << "Try again...........\n\n";
@@ -116,6 +117,7 @@ main:
 	cout << "9 >> Exit Program" << endl << endl;
 	cout << "Enter your choice: ";
 	cin >> choice;
+	system("CLS");
 	if (choice > 9 || choice < 1 || (choice>4 && choice <9)) {
 		cout << "Invalid Choice\n";
 		cout << "Try again...........\n\n";
