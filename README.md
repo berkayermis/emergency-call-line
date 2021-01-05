@@ -23,13 +23,11 @@ UPDATE : this updating function allows people to update existing denunciation in
 DELETE : deletion function allows people to delete denunciation by entering a explanation
 
 TRANSLATE : this translation function for international citizens allows to see the menu in english.
-<p align="center">
-<img width="400" height="500" src="https://user-images.githubusercontent.com/67913214/103598561-f8148780-4f13-11eb-85e9-e5ce20ebdecf.jpg">
-</p>
 
-<p align="center">
+<img width="400" height="500" src="https://user-images.githubusercontent.com/67913214/103598561-f8148780-4f13-11eb-85e9-e5ce20ebdecf.jpg">
+
 <img width="400" height="500" src="https://user-images.githubusercontent.com/67913214/103598569-fd71d200-4f13-11eb-9d93-e41ef3820ea5.jpg">
-</p>
+
 
 
 
