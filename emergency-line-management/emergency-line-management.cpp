@@ -5,6 +5,8 @@
 #include <vector>
 #include <sstream>
 #include <iomanip>
+#include <cstdio>
+
 
 using namespace std;
 
@@ -12,7 +14,7 @@ using namespace std;
 	Information of denunciations struct
 */
 struct information {
-	string address, detail, name;
+	string address, detail, name,type;
 	int id;
 };
 
@@ -27,6 +29,7 @@ int selectDepartment(fstream&);
 int idCreator();
 void readData();
 void display_data();
+void deleteFunction(int);
 
 /*
 	Main function consists all departments processes itself
@@ -41,7 +44,9 @@ int main()
 
 	selectDepartment(data); //this function allows user to select department
 	//readData();
-	display_data();
+	//display_data();
+	//deleteFunction(1);
+	//display_data();
 	data.close();
 	return 0;
 }
@@ -51,7 +56,7 @@ int main()
 void addFire(fstream& file) {
 
 f:
-	int fireChoice, id;
+	int fireChoice;
 	information tempFireInfo;
 	cout << "1 >> Emergency fire notice " << endl;
 	cout << "2 >> Forest fire notice" << endl;
@@ -75,7 +80,8 @@ f:
 		cout << "Name: ";
 		getline(cin >> ws, tempFireInfo.name);
 		tempFireInfo.id = idCreator();
-		file << tempFireInfo.id << ';' << "Emergency Fire Notification" << ';' << tempFireInfo.address << ';' << tempFireInfo.detail << ';' << tempFireInfo.name << endl;
+		tempFireInfo.type = "Emergency Fire Notification";
+		file << tempFireInfo.id << ';' << tempFireInfo.type << ';' << tempFireInfo.address << ';' << tempFireInfo.detail << ';' << tempFireInfo.name << endl;
 		break;
 	case 2:
 		cout << "Forest Fire Notification:" << endl;
@@ -154,23 +160,22 @@ void readData()
 		cout << "File not open\n";
 		return;
 	}
-
 	string line;
 	const char delim = ';';
 	string T;
+	getline(file, line);
 	while (getline(file, line))
 	{
 		istringstream ss(line);
 		information person;
 		string type;
-		
 
 		getline(ss, T, delim);
 		stringstream geek(T);
 		geek >> person.id;
 		//cout << person.id << " ";
 		getline(ss, T, delim);
-		T = T;
+		person.type = T;
 		//cout << T << " ";
 		getline(ss, T, delim);
 		person.address = T;
@@ -178,17 +183,18 @@ void readData()
 		person.detail = T;
 		getline(ss, T, delim);
 		person.name = T;
-		
+
 		/*
 		cout << person.address << " ";
 		cout << person.detail << " ";
 		cout << person.name << " ";
 		cout << endl;
 		*/
+
 		fireInfo.push_back(person);
-
 	}
-
+	
+	file.close();
 }
 
 
@@ -200,6 +206,22 @@ void display_data()
 			 << setw(5) << fireInfo[i].address
 			 << setw(8) << fireInfo[i].name
 			 << setw(8) << fireInfo[i].detail
+			<<	"bastýrýldý"
 			 << '\n';
+}
+
+
+void deleteFunction(int id) {
+	readData();
+	ofstream data;
+	data.open("data.csv",ios::out);
+	data << "ID"<< ";" <<"Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
+	for (unsigned int i = 0; i < fireInfo.size(); i++) {
+		if (id == fireInfo[i].id) {
+			continue;
+		}
+		data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
+	}
+	data.close();
 }
 
