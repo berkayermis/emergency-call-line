@@ -6,7 +6,6 @@
 #include <sstream>
 #include <iomanip>
 
-
 using namespace std;
 
 /*
@@ -41,6 +40,7 @@ int main()
 	data.open("data.csv", ios::out | ios::app);
 
 	selectDepartment(data); //this function allows user to select department
+	//readData();
 	display_data();
 	data.close();
 	return 0;
@@ -88,7 +88,6 @@ f:
 		tempFireInfo.id = idCreator();
 		file << tempFireInfo.id << ";" << "Forest Fire Notification" << ";" << tempFireInfo.address << ";" << tempFireInfo.detail << ";" << tempFireInfo.name << endl;
 		break;
-
 	default:
 		goto f;
 	}
@@ -158,20 +157,34 @@ void readData()
 
 	string line;
 	const char delim = ';';
-
+	string T;
 	while (getline(file, line))
 	{
 		istringstream ss(line);
 		information person;
 		string type;
-		string temp;
+		
 
-		getline(ss, temp, delim);
-		person.id = std::stoi(temp);
-		getline(ss, type, delim);
-		getline(ss, person.address, delim);
-		getline(ss, person.name, delim);
-		getline(ss, person.detail, delim);
+		getline(ss, T, delim);
+		stringstream geek(T);
+		geek >> person.id;
+		//cout << person.id << " ";
+		getline(ss, T, delim);
+		T = T;
+		//cout << T << " ";
+		getline(ss, T, delim);
+		person.address = T;
+		getline(ss, T, delim);
+		person.detail = T;
+		getline(ss, T, delim);
+		person.name = T;
+		
+		/*
+		cout << person.address << " ";
+		cout << person.detail << " ";
+		cout << person.name << " ";
+		cout << endl;
+		*/
 		fireInfo.push_back(person);
 
 	}
@@ -184,8 +197,9 @@ void display_data()
 	readData();
 	for (unsigned int i = 0; i < fireInfo.size(); i++)
 		cout << setw(8) << fireInfo[i].id
-		<< setw(5) << fireInfo[i].address
-		<< setw(8) << fireInfo[i].name
-		<< setw(8) << fireInfo[i].detail
-		<< '\n';
+			 << setw(5) << fireInfo[i].address
+			 << setw(8) << fireInfo[i].name
+			 << setw(8) << fireInfo[i].detail
+			 << '\n';
 }
+
