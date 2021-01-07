@@ -2,7 +2,10 @@
 #include <fstream>
 #include <cstdlib>
 #include <string>
-#include <stdlib.h>
+#include <vector>
+#include <sstream>
+#include <iomanip>
+
 
 using namespace std;
 
@@ -10,8 +13,12 @@ using namespace std;
 	Information of denunciations struct
 */
 struct information {
-	string address,detail,name;
+	string address, detail, name;
+	int id;
 };
+
+vector<information> fireInfo;
+
 
 /*
 	Prototype functions
@@ -19,6 +26,8 @@ struct information {
 void addFire(fstream&);
 int selectDepartment(fstream&);
 int idCreator();
+void readData();
+void display_data();
 
 /*
 	Main function consists all departments processes itself
@@ -32,9 +41,9 @@ int main()
 	data.open("data.csv", ios::out | ios::app);
 
 	selectDepartment(data); //this function allows user to select department
-
+	display_data();
 	data.close();
-	return 0; 
+	return 0;
 }
 
 
@@ -42,13 +51,13 @@ int main()
 void addFire(fstream& file) {
 
 f:
-	int fireChoice,id;
-	information fireInfo;
+	int fireChoice, id;
+	information tempFireInfo;
 	cout << "1 >> Emergency fire notice " << endl;
 	cout << "2 >> Forest fire notice" << endl;
+
 	cout << "Enter your choice: ";
 	cin >> fireChoice;
-	system("CLS");
 
 	if (fireChoice > 2 || fireChoice < 1) {
 		cout << "Invalid Choice\n";
@@ -57,31 +66,31 @@ f:
 	}
 
 	switch (fireChoice) {
-		case 1:
-			cout << "Emergency Fire Notification:" << endl;
-			cout << "Address: ";
-			getline(cin >> ws, fireInfo.address);
-			cout << "Detail: "; 
-			getline(cin >> ws, fireInfo.detail);
-			cout << "Name: ";
-			getline(cin >> ws, fireInfo.name);
-			id = idCreator();
-			file << id << ";" <<"Emergency Fire Notification"<< ";" << fireInfo.address << ";" << fireInfo.detail <<";"<< fireInfo.name << endl;
-			break;
-		case 2:
-			cout << "Forest Fire Notification:" << endl;
-			cout << "Address: ";
-			getline(cin >> ws, fireInfo.address);
-			cout << "Detail: ";
-			getline(cin >> ws, fireInfo.detail);
-			cout << "Name: ";
-			getline(cin >> ws, fireInfo.name);
-			id = idCreator();
-			file << id << ";" << "Forest Fire Notification" << ";" << fireInfo.address << ";" << fireInfo.detail << ";" << fireInfo.name << endl;
-			break;
+	case 1:
+		cout << "Emergency Fire Notification:" << endl;
+		cout << "Address: ";
+		getline(cin >> ws, tempFireInfo.address);
+		cout << "Detail: ";
+		getline(cin >> ws, tempFireInfo.detail);
+		cout << "Name: ";
+		getline(cin >> ws, tempFireInfo.name);
+		tempFireInfo.id = idCreator();
+		file << tempFireInfo.id << ';' << "Emergency Fire Notification" << ';' << tempFireInfo.address << ';' << tempFireInfo.detail << ';' << tempFireInfo.name << endl;
+		break;
+	case 2:
+		cout << "Forest Fire Notification:" << endl;
+		cout << "Address: ";
+		getline(cin >> ws, tempFireInfo.address);
+		cout << "Detail: ";
+		getline(cin >> ws, tempFireInfo.detail);
+		cout << "Name: ";
+		getline(cin >> ws, tempFireInfo.name);
+		tempFireInfo.id = idCreator();
+		file << tempFireInfo.id << ";" << "Forest Fire Notification" << ";" << tempFireInfo.address << ";" << tempFireInfo.detail << ";" << tempFireInfo.name << endl;
+		break;
 
-		default:
-			goto f;
+	default:
+		goto f;
 	}
 }
 
@@ -117,8 +126,7 @@ main:
 	cout << "9 >> Exit Program" << endl << endl;
 	cout << "Enter your choice: ";
 	cin >> choice;
-	system("CLS");
-	if (choice > 9 || choice < 1 || (choice>4 && choice <9)) {
+	if (choice > 9 || choice < 1 || (choice > 4 && choice < 9)) {
 		cout << "Invalid Choice\n";
 		cout << "Try again...........\n\n";
 		goto main;
@@ -126,11 +134,58 @@ main:
 	else if (choice == 1) { //addEmergency()
 	}
 	else if (choice == 2) { //addPolice()
-	}	
-	else if (choice == 3) { addFire(data); //Fire department usage 
+	}
+	else if (choice == 3) {
+		addFire(data); //Fire department usage 
 	}
 	else if (choice == 4) { //addVeterinary()
 	}
-	else if (choice == 9) { return 0; 
+	else if (choice == 9) {
+		return 0;
 	}
+}
+
+void readData()
+{
+
+	fstream file;
+	file.open("data.csv");
+	if (!file)
+	{
+		cout << "File not open\n";
+		return;
+	}
+
+	string line;
+	const char delim = ';';
+
+	while (getline(file, line))
+	{
+		istringstream ss(line);
+		information person;
+		string type;
+		string temp;
+
+		getline(ss, temp, delim);
+		person.id = std::stoi(temp);
+		getline(ss, type, delim);
+		getline(ss, person.address, delim);
+		getline(ss, person.name, delim);
+		getline(ss, person.detail, delim);
+		fireInfo.push_back(person);
+
+	}
+
+}
+
+
+void display_data()
+{
+	readData();
+	for (unsigned int i = 0; i < fireInfo.size(); i++)
+		cout << setw(8) << fireInfo[i].id
+		<< setw(5) << fireInfo[i].address
+		<< setw(8) << fireInfo[i].name
+		<< setw(8) << fireInfo[i].detail
+		<< '\n';
 }
