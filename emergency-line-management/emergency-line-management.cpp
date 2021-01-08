@@ -43,7 +43,7 @@ int main()
 	selectDepartment(data); //this function allows user to select department
 	//readData();
 	//display_data();
-	//deleteFunction(2);
+	//deleteFunction(5);
 	//display_data();
 	data.close();
 	return 0;
@@ -225,6 +225,8 @@ void deleteFunction(int id) {
 		}
 		data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
 	}
+	fstream ids("ids.csv", ios::out | ios::app);
+	ids << id << endl;
 	data.close();
 }
 
