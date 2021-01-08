@@ -19,8 +19,7 @@ struct information {
 };
 
 vector<information> fireInfo;
-
-
+vector<int> idStr;
 /*
 	Prototype functions
 */
@@ -41,11 +40,10 @@ int main()
 	*/
 	fstream data;
 	data.open("data.csv", ios::out | ios::app);
-
 	selectDepartment(data); //this function allows user to select department
 	//readData();
 	//display_data();
-	//deleteFunction(1);
+	//deleteFunction(2);
 	//display_data();
 	data.close();
 	return 0;
@@ -99,20 +97,25 @@ f:
 	}
 }
 
-/*
-	idCreator function provides to create ID of denunciations with respect to number of line in excel file.
-*/
-int idCreator()
-{
-	int lineNo = 0;
+int idCreator() {
+	fstream file("ids.csv",ios::in);
 	string line;
-	fstream data("data.csv", ios::in);
-	if (data.is_open()) {
-		while (getline(data, line)) {
-			lineNo++;
-		}
+	int tempID;
+	while (getline(file, line)) {
+		stringstream geek(line);
+		geek >> tempID;
+		idStr.push_back(tempID);
 	}
-	return lineNo;
+	int value = idStr.back();
+	idStr.pop_back();
+	file.clear();
+	file.close();
+	file.open("ids.csv",ios::out);
+	for (int i = 0; i < idStr.size(); i++) {
+		file << idStr.at(i) << endl;
+	}
+	file.close();
+	return value;
 }
 
 /*
@@ -148,6 +151,7 @@ main:
 	else if (choice == 9) {
 		return 0;
 	}
+	return 0;
 }
 
 void readData()
@@ -206,7 +210,6 @@ void display_data()
 			 << setw(5) << fireInfo[i].address
 			 << setw(8) << fireInfo[i].name
 			 << setw(8) << fireInfo[i].detail
-			<<	"bastýrýldý"
 			 << '\n';
 }
 
