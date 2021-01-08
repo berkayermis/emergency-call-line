@@ -29,6 +29,7 @@ int idCreator();
 void readData();
 void display_data();
 void deleteFunction(int);
+void update(int);
 
 /*
 	Main function consists all departments processes itself
@@ -40,7 +41,8 @@ int main()
 	*/
 	fstream data;
 	data.open("data.csv", ios::out | ios::app);
-	selectDepartment(data); //this function allows user to select department
+	//selectDepartment(data); //this function allows user to select department
+	update(3);
 	//readData();
 	//display_data();
 	//deleteFunction(5);
@@ -54,8 +56,9 @@ int main()
 void addFire(fstream& file) {
 
 f:
-	int fireChoice;
+	
 	information tempFireInfo;
+	int fireChoice;
 	cout << "1 >> Emergency fire notice " << endl;
 	cout << "2 >> Forest fire notice" << endl;
 
@@ -227,6 +230,42 @@ void deleteFunction(int id) {
 	}
 	fstream ids("ids.csv", ios::out | ios::app);
 	ids << id << endl;
+	ids.close();
 	data.close();
 }
 
+void update(int id) {
+	readData();
+	ofstream data;
+	data.open("data.csv", ios::out);
+	data << "ID" << ";" << "Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
+	for (unsigned int i = 0; i < fireInfo.size(); i++) {
+		if (id == fireInfo[i].id) {
+			f:
+				int fireChoice;
+				cout << "1 >> Emergency fire notice " << endl;
+				cout << "2 >> Forest fire notice" << endl;
+				cout << "Enter your choice: ";
+				cin >> fireChoice;
+
+				if (fireChoice > 2 || fireChoice < 1) {
+					cout << "Invalid Choice\n";
+					cout << "Try again...........\n\n";
+					goto f;
+				}
+				else if (fireChoice == 1) { fireInfo[i].type = "Emergency fire notice"; }
+				else fireInfo[i].type = "Forest fire notice";
+
+			cout << "Address: ";
+			getline(cin >> ws, fireInfo[i].address);
+			cout << "Detail: ";
+			getline(cin >> ws, fireInfo[i].detail);
+			cout << "Name: ";
+			getline(cin >> ws, fireInfo[i].name);
+			data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
+		}
+		else
+			data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
+
+	}
+}
