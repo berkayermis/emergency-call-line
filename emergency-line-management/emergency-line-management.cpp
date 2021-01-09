@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cstdio>
+#include <Windows.h>
 
 
 using namespace std;
@@ -20,11 +21,14 @@ struct information {
 
 vector<information> fireInfo;
 vector<int> idStr;
+string notifications[6] = { "Emergency Notification","Police Department Notification","Fire Notification",
+						"Emergency Fire Notificationotice","Forest Fire Notification", "Veterinary Service Notification"};
+
 /*
 	Prototype functions
 */
-void addFire(fstream&);
-int selectDepartment(fstream&);
+void addDenunction(fstream&,information);
+int specifyDenunction(fstream&);
 int idCreator();
 void readData();
 void display_data();
@@ -41,62 +45,94 @@ int main()
 	*/
 	fstream data;
 	data.open("data.csv", ios::out | ios::app);
-	//selectDepartment(data); //this function allows user to select department
-	update(3);
+
+	specifyDenunction(data);
+	//update(3);
 	//readData();
 	//display_data();
 	//deleteFunction(5);
 	//display_data();
+
 	data.close();
 	return 0;
 }
 
+void addDenunction(fstream& file, information prototype) {
+	cout << prototype.type << endl;
+	cout << "Address: ";
+	getline(cin >> ws, prototype.address);
+	cout << "Detail: ";
+	getline(cin >> ws, prototype.detail);
+	cout << "Name: ";
+	getline(cin >> ws, prototype.name);
+	prototype.id = idCreator();
+	file << prototype.id << ';' << prototype.type << ';' << prototype.address << ';' << prototype.detail << ';' << prototype.name << endl;
+}
+
 
 // ADD function allows user to add a new denunciation to Emergency Call System
-void addFire(fstream& file) {
+int specifyDenunction(fstream& file) {
 
-f:
-	
-	information tempFireInfo;
-	int fireChoice;
-	cout << "1 >> Emergency fire notice " << endl;
-	cout << "2 >> Forest fire notice" << endl;
-
+main:
+	int choice;
+	cout << "Welcome to Emergency Call Lines" << endl;
+	cout << "1 >> Emergency Department" << endl;
+	cout << "2 >> Police Department" << endl;
+	cout << "3 >> Fire Department" << endl;
+	cout << "4 >> Veterinary Service" << endl;
+	cout << "9 >> Exit Program" << endl << endl;
 	cout << "Enter your choice: ";
-	cin >> fireChoice;
 
-	if (fireChoice > 2 || fireChoice < 1) {
-		cout << "Invalid Choice\n";
-		cout << "Try again...........\n\n";
-		goto f;
-	}
+	cin >> choice;
+	information prototype;
 
-	switch (fireChoice) {
-	case 1:
-		cout << "Emergency Fire Notification:" << endl;
-		cout << "Address: ";
-		getline(cin >> ws, tempFireInfo.address);
-		cout << "Detail: ";
-		getline(cin >> ws, tempFireInfo.detail);
-		cout << "Name: ";
-		getline(cin >> ws, tempFireInfo.name);
-		tempFireInfo.id = idCreator();
-		tempFireInfo.type = "Emergency Fire Notification";
-		file << tempFireInfo.id << ';' << tempFireInfo.type << ';' << tempFireInfo.address << ';' << tempFireInfo.detail << ';' << tempFireInfo.name << endl;
-		break;
-	case 2:
-		cout << "Forest Fire Notification:" << endl;
-		cout << "Address: ";
-		getline(cin >> ws, tempFireInfo.address);
-		cout << "Detail: ";
-		getline(cin >> ws, tempFireInfo.detail);
-		cout << "Name: ";
-		getline(cin >> ws, tempFireInfo.name);
-		tempFireInfo.id = idCreator();
-		file << tempFireInfo.id << ";" << "Forest Fire Notification" << ";" << tempFireInfo.address << ";" << tempFireInfo.detail << ";" << tempFireInfo.name << endl;
-		break;
-	default:
-		goto f;
+	switch (choice) {
+		case 1:
+			prototype.type = notifications[0];
+			addDenunction(file, prototype);
+			break;
+		case 2:
+			prototype.type = notifications[1];
+			addDenunction(file, prototype);
+			break;
+		case 3:
+			prototype.type = notifications[2];
+			f:
+				int Choice;
+				cout << "1 >> Emergency Fire Notification " << endl;
+				cout << "2 >> Forest Fire Notification" << endl;
+				cout << "9 >> Back" << endl;
+				cout << "Enter your choice: ";
+				cin >> Choice;
+
+				switch (Choice) {
+					case 1:
+						prototype.type = notifications[3];
+						addDenunction(file, prototype);
+						break;
+					case 2:
+						prototype.type = notifications[4];
+						addDenunction(file, prototype);
+						break;
+					case 9:
+						goto main;
+						break;
+					default:
+						cout << "Invalid Choice\n";
+						cout << "Try again...........\n\n";
+						goto f;
+				}
+			break;
+		case 4:
+			prototype.type = notifications[5];
+			addDenunction(file, prototype);
+			break;
+		case 9:
+			return 0;
+		default:
+			cout << "Invalid Choice\n";
+			cout << "Try again...........\n\n";
+			goto main;
 	}
 }
 
@@ -119,42 +155,6 @@ int idCreator() {
 	}
 	file.close();
 	return value;
-}
-
-/*
-	SELECT function allows user to select department
-*/
-int selectDepartment(fstream& data) {
-	int choice;
-
-	//Main menu of program
-main:
-	cout << "Welcome to Emergency Call Lines" << endl;
-	cout << "1 >> Emergency" << endl;
-	cout << "2 >> Police" << endl;
-	cout << "3 >> Fire Department" << endl;
-	cout << "4 >> Veterinary Service" << endl;
-	cout << "9 >> Exit Program" << endl << endl;
-	cout << "Enter your choice: ";
-	cin >> choice;
-	if (choice > 9 || choice < 1 || (choice > 4 && choice < 9)) {
-		cout << "Invalid Choice\n";
-		cout << "Try again...........\n\n";
-		goto main;
-	}
-	else if (choice == 1) { //addEmergency()
-	}
-	else if (choice == 2) { //addPolice()
-	}
-	else if (choice == 3) {
-		addFire(data); //Fire department usage 
-	}
-	else if (choice == 4) { //addVeterinary()
-	}
-	else if (choice == 9) {
-		return 0;
-	}
-	return 0;
 }
 
 void readData()
