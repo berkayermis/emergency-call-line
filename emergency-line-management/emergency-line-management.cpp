@@ -308,7 +308,6 @@ int update(int id) {
 				cout << "Try again...........\n\n";
 				goto main;
 			}
-			
 		}
 		else
 			data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
