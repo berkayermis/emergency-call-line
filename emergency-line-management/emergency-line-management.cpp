@@ -6,8 +6,6 @@
 #include <sstream>
 #include <iomanip>
 #include <cstdio>
-#include <Windows.h>
-
 
 using namespace std;
 
@@ -33,7 +31,8 @@ int idCreator();
 void readData();
 void display_data();
 void deleteFunction(int);
-void update(int);
+int update(int);
+void updateDenunction(fstream&, information);
 
 /*
 	Main function consists all departments processes itself
@@ -46,11 +45,11 @@ int main()
 	fstream data;
 	data.open("data.csv", ios::out | ios::app);
 
-	specifyDenunction(data);
-	//update(3);
+	//specifyDenunction(data);
+	update(12);
 	//readData();
 	//display_data();
-	//deleteFunction(5);
+	//deleteFunction(1);
 	//display_data();
 
 	data.close();
@@ -66,6 +65,16 @@ void addDenunction(fstream& file, information prototype) {
 	cout << "Name: ";
 	getline(cin >> ws, prototype.name);
 	prototype.id = idCreator();
+	file << prototype.id << ';' << prototype.type << ';' << prototype.address << ';' << prototype.detail << ';' << prototype.name << endl;
+}
+
+void updateDenunction(fstream& file,information prototype) {
+	cout << "Address: ";
+	getline(cin >> ws, prototype.address);
+	cout << "Detail: ";
+	getline(cin >> ws, prototype.detail);
+	cout << "Name: ";
+	getline(cin >> ws, prototype.name);
 	file << prototype.id << ';' << prototype.type << ';' << prototype.address << ';' << prototype.detail << ';' << prototype.name << endl;
 }
 
@@ -180,23 +189,14 @@ void readData()
 		getline(ss, T, delim);
 		stringstream geek(T);
 		geek >> person.id;
-		//cout << person.id << " ";
 		getline(ss, T, delim);
 		person.type = T;
-		//cout << T << " ";
 		getline(ss, T, delim);
 		person.address = T;
 		getline(ss, T, delim);
 		person.detail = T;
 		getline(ss, T, delim);
 		person.name = T;
-
-		/*
-		cout << person.address << " ";
-		cout << person.detail << " ";
-		cout << person.name << " ";
-		cout << endl;
-		*/
 
 		fireInfo.push_back(person);
 	}
@@ -234,38 +234,83 @@ void deleteFunction(int id) {
 	data.close();
 }
 
-void update(int id) {
+int update(int id) {
 	readData();
-	ofstream data;
+	fstream data;
 	data.open("data.csv", ios::out);
 	data << "ID" << ";" << "Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
 	for (unsigned int i = 0; i < fireInfo.size(); i++) {
 		if (id == fireInfo[i].id) {
-			f:
-				int fireChoice;
-				cout << "1 >> Emergency fire notice " << endl;
-				cout << "2 >> Forest fire notice" << endl;
-				cout << "Enter your choice: ";
-				cin >> fireChoice;
 
-				if (fireChoice > 2 || fireChoice < 1) {
+		main:
+			int choice;
+			cout << "Change denunction type" << endl;
+			cout << "1 >> Emergency Department" << endl;
+			cout << "2 >> Police Department" << endl;
+			cout << "3 >> Fire Department" << endl;
+			cout << "4 >> Veterinary Service" << endl;
+			cout << "9 >> Exit Program" << endl << endl;
+			cout << "Enter your choice: ";
+
+			cin >> choice;
+			information prototype;
+
+			switch (choice) {
+			case 1:
+				prototype.type = notifications[0];
+				prototype.id = id;
+				updateDenunction(data,prototype);
+				break;
+			case 2:
+				prototype.type = notifications[1];
+				prototype.id = id;
+				updateDenunction(data, prototype);
+				break;
+			case 3:
+				prototype.type = notifications[2];
+			f:
+				int Choice;
+				cout << "1 >> Emergency Fire Notification " << endl;
+				cout << "2 >> Forest Fire Notification" << endl;
+				cout << "9 >> Back" << endl;
+				cout << "Enter your choice: ";
+				cin >> Choice;
+
+				switch (Choice) {
+				case 1:
+					prototype.type = notifications[3];
+					prototype.id = id;
+					updateDenunction(data, prototype);
+					break;
+				case 2:
+					prototype.type = notifications[4];
+					prototype.id = id;
+					updateDenunction(data, prototype);
+					break;
+				case 9:
+					goto main;
+					break;
+				default:
 					cout << "Invalid Choice\n";
 					cout << "Try again...........\n\n";
 					goto f;
 				}
-				else if (fireChoice == 1) { fireInfo[i].type = "Emergency fire notice"; }
-				else fireInfo[i].type = "Forest fire notice";
-
-			cout << "Address: ";
-			getline(cin >> ws, fireInfo[i].address);
-			cout << "Detail: ";
-			getline(cin >> ws, fireInfo[i].detail);
-			cout << "Name: ";
-			getline(cin >> ws, fireInfo[i].name);
-			data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
+				break;
+			case 4:
+				prototype.type = notifications[5];
+				prototype.id = id;
+				updateDenunction(data, prototype);
+				break;
+			case 9:
+				return 0;
+			default:
+				cout << "Invalid Choice\n";
+				cout << "Try again...........\n\n";
+				goto main;
+			}
+			
 		}
 		else
 			data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
-
 	}
 }
