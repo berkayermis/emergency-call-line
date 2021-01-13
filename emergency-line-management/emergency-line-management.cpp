@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iomanip>
 #include <cstdio>
+#include <windows.h>
+
 
 using namespace std;
 
@@ -17,7 +19,7 @@ struct information {
 	int id;
 };
 
-vector<information> fireInfo;
+vector<information> general;
 vector<int> idStr;
 string notifications[6] = { "Emergency Notification","Police Department Notification","Fire Notification",
 						"Emergency Fire Notificationotice","Forest Fire Notification", "Veterinary Service Notification"};
@@ -44,11 +46,11 @@ int main()
 	*/
 	fstream data;
 	data.open("data.csv", ios::out | ios::app);
-
-	//specifyDenunction(data);
-	update(12);
+     //display_data();
+	specifyDenunction(data);
+	
 	//readData();
-	//display_data();
+	
 	//deleteFunction(1);
 	//display_data();
 
@@ -65,6 +67,7 @@ void addDenunction(fstream& file, information prototype) {
 	cout << "Name: ";
 	getline(cin >> ws, prototype.name);
 	prototype.id = idCreator();
+	cout << "Your ID is "<<prototype.id;
 	file << prototype.id << ';' << prototype.type << ';' << prototype.address << ';' << prototype.detail << ';' << prototype.name << endl;
 }
 
@@ -89,6 +92,8 @@ main:
 	cout << "2 >> Police Department" << endl;
 	cout << "3 >> Fire Department" << endl;
 	cout << "4 >> Veterinary Service" << endl;
+	cout << "5 >> Update Denunction" << endl;
+	cout << "6 >>  Delete Denunction " << endl;
 	cout << "9 >> Exit Program" << endl << endl;
 	cout << "Enter your choice: ";
 
@@ -123,6 +128,7 @@ main:
 						prototype.type = notifications[4];
 						addDenunction(file, prototype);
 						break;
+					
 					case 9:
 						goto main;
 						break;
@@ -136,6 +142,16 @@ main:
 			prototype.type = notifications[5];
 			addDenunction(file, prototype);
 			break;
+		case 5:
+			int ýdd;
+			cout << "Enter ID : ";
+			cin >> ýdd;
+			update(ýdd);
+		case 6:
+			cout << "Enter ID : ";
+			cin >> ýdd;
+			deleteFunction(ýdd);
+			cout << "Denunction is deleted.";
 		case 9:
 			return 0;
 		default:
@@ -152,6 +168,7 @@ int idCreator() {
 	while (getline(file, line)) {
 		stringstream geek(line);
 		geek >> tempID;
+		
 		idStr.push_back(tempID);
 	}
 	int value = idStr.back();
@@ -160,6 +177,7 @@ int idCreator() {
 	file.close();
 	file.open("ids.csv",ios::out);
 	for (int i = 0; i < idStr.size(); i++) {
+		
 		file << idStr.at(i) << endl;
 	}
 	file.close();
@@ -198,7 +216,7 @@ void readData()
 		getline(ss, T, delim);
 		person.name = T;
 
-		fireInfo.push_back(person);
+		general.push_back(person);
 	}
 	
 	file.close();
@@ -208,11 +226,11 @@ void readData()
 void display_data()
 {
 	readData();
-	for (unsigned int i = 0; i < fireInfo.size(); i++)
-		cout << setw(8) << fireInfo[i].id
-			 << setw(5) << fireInfo[i].address
-			 << setw(8) << fireInfo[i].name
-			 << setw(8) << fireInfo[i].detail
+	for (unsigned int i = 0; i < general.size(); i++)
+		cout << setw(8) << general[i].id
+			 << setw(5) << general[i].address
+			 << setw(8) << general[i].name
+			 << setw(8) << general[i].detail
 			 << '\n';
 }
 
@@ -222,11 +240,11 @@ void deleteFunction(int id) {
 	ofstream data;
 	data.open("data.csv",ios::out);
 	data << "ID"<< ";" <<"Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
-	for (unsigned int i = 0; i < fireInfo.size(); i++) {
-		if (id == fireInfo[i].id) {
+	for (unsigned int i = 0; i < general.size(); i++) {
+		if (id == general[i].id) {
 			continue;
 		}
-		data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
+		data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
 	}
 	fstream ids("ids.csv", ios::out | ios::app);
 	ids << id << endl;
@@ -239,8 +257,8 @@ int update(int id) {
 	fstream data;
 	data.open("data.csv", ios::out);
 	data << "ID" << ";" << "Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
-	for (unsigned int i = 0; i < fireInfo.size(); i++) {
-		if (id == fireInfo[i].id) {
+	for (unsigned int i = 0; i < general.size(); i++) {
+		if (id == general[i].id) {
 
 		main:
 			int choice;
@@ -310,6 +328,6 @@ int update(int id) {
 			}
 		}
 		else
-			data << fireInfo[i].id << ";" << fireInfo[i].type << ";" << fireInfo[i].address << ";" << fireInfo[i].detail << ";" << fireInfo[i].name << endl;
+			data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
 	}
 }

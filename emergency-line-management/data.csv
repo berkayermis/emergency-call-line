@@ -1,12 +1,10 @@
 ID;Type;Address;Detail;Name
 3;Emergency fire notice;CHAN;GE;D
 4;Emergency Fire Notification;we;we;we
-6;Forest Fire Notification;sd;ssd;d
 5;Forest Fire Notification;sd;sd;sd
 7;Emergency Notification;sd;sd;sd
 8;Police Department Notification;police;police;police
 9;Emergency Fire Notificationotice;e f;e f;e f
 10;Emergency Fire Notificationotice;e f;e f;ef
-11;Forest Fire Notification;ff;ff;ff
-12;Police Department Notification;police;police;police
-1;Police Department Notification;sd;sd;sd
+11;Emergency Notification;a;d;s
+20;Veterinary Service Notification;urfa;kza;çlay
