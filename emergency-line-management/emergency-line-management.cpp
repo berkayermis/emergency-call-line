@@ -460,6 +460,7 @@ int update(int id) {
 				goto main;
 			}
 		}
+
 		else
 			data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
 	}
