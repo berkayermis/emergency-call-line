@@ -1,4 +1,4 @@
-//Names: Ýlknur Akçay - Merve zehra Peru - Muhammed Berkay Ermiþ
+//Names:Ilknur Akçay - Merve zehra Peru - Muhammed Berkay Ermis
 //
 //Course: Programming for Engineering Project 2021
 //
