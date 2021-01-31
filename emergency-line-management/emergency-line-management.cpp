@@ -1,3 +1,10 @@
+
+//Names: Ýlknur Akçay - Merve zehra Peru - Muhammed Berkay Ermiþ
+//
+//Course: Programming for Engineering Project 2021
+//
+//Purpose: A program that allows you to achieve these emergencies together when emergencies occur.
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -18,18 +25,23 @@ struct information {
 };
 vector<information> general;
 vector<int> idStr;
-string notifications[12] = { "Emergency Notification",
+string notifications[16] = { "Emergency Notification",
 							"Traffic Accident Notification",
 							"Home Accident Notification",
 							"Work Accident Notification",
 							"Others",
-							"Police Department Notification",
 							"Fire Notification",
 							"Emergency Fire Notificationotice",
 							"Forest Fire Notification",
 							"Veterinary Service Notification",
 							"Pet Help",
-							"Street Animals Help" };
+							"Street Animals Help",
+							"Police Department Notification",
+							"Traffic Rule Violations",
+							"Missing Person Reports",
+							"Public Securities",
+							"Anti-narcotics Crimes"
+};
 
 /*
 	Prototype functions
@@ -42,6 +54,7 @@ void display_data();
 void deleteFunction(int);
 int update(int);
 void updateDenunction(fstream&, information);
+bool check(istream&);
 
 /*
 	Main function consists all departments processes itself
@@ -63,6 +76,16 @@ int main()
 
 	data.close();
 	return 0;
+}
+
+bool check(istream& cin) {
+	while (cin.fail()) {
+		cout << "Invalid number" << endl << endl;
+		cin.clear();
+		cin.ignore(256, '\n');
+		return true;
+	}
+	return false;
 }
 
 void addDenunction(fstream& file, information prototype) {
@@ -88,7 +111,6 @@ void updateDenunction(fstream& file, information prototype) {
 	file << prototype.id << ';' << prototype.type << ';' << prototype.address << ';' << prototype.detail << ';' << prototype.name << endl;
 }
 
-
 // ADD function allows user to add a new denunciation to Emergency Call System
 int specifyDenunction(fstream& file) {
 
@@ -100,17 +122,12 @@ main:
 	cout << "3 >> Fire Department" << endl;
 	cout << "4 >> Veterinary Service" << endl;
 	cout << "5 >> Update Denunction" << endl;
-	cout << "6 >>  Delete Denunction " << endl;
+	cout << "6 >> Delete Denunction " << endl;
 	cout << "9 >> Exit Program" << endl << endl;
 	cout << "Enter your choice: ";
 
 	cin >> choice;
-	while (cin.fail()) {
-		cout << "Please enter number" << endl;
-		cin.clear();
-		cin.ignore(256, '\n');
-		cin >> choice;
-	}
+	if (check(cin)) goto main;
 	information prototype;
 
 	switch (choice) {
@@ -125,6 +142,7 @@ main:
 		cout << "9 >> Back" << endl;
 		cout << "Enter your choice: ";
 		cin >> Choice1;
+		if (check(cin)) goto e;
 		switch (Choice1) {
 		case 1:
 			prototype.type = notifications[1];
@@ -148,17 +166,53 @@ main:
 		default:
 			cout << "Invalid Choice\n";
 			cout << "Try again...........\n\n";
-			goto f;
+			goto e;
 		}
 		break;
 		addDenunction(file, prototype);
 		break;
-	case 2:
-		prototype.type = notifications[5];
+	case 2:      //Police Department  bitti
+		prototype.type = notifications[11];
+	a:
+		int Choice3;
+		cout << "1 >> Traffic Rule Violations " << endl;
+		cout << "2 >> Missing Person Reports" << endl;
+		cout << "3 >> Public Securities" << endl;
+		cout << "4 >> Anti-narcotics Crimes" << endl;
+		cout << "9 >> Back" << endl;
+		cout << "Enter your choice: ";
+		cin >> Choice3;
+		if (check(cin)) goto a;
+		switch (Choice3) {
+		case 1:
+			prototype.type = notifications[12];
+			addDenunction(file, prototype);
+			break;
+		case 2:
+			prototype.type = notifications[13];
+			addDenunction(file, prototype);
+			break;
+		case 3:
+			prototype.type = notifications[14];
+			addDenunction(file, prototype);
+			break;
+		case 4:
+			prototype.type = notifications[15];
+			addDenunction(file, prototype);
+			break;
+		case 9:
+			goto main;
+			break;
+		default:
+			cout << "Invalid Choice\n";
+			cout << "Try again...........\n\n";
+			goto a;
+		}
+		break;
 		addDenunction(file, prototype);
 		break;
 	case 3:
-		prototype.type = notifications[6];
+		prototype.type = notifications[5];
 	f:
 		int Choice;
 		cout << "1 >> Emergency Fire Notification " << endl;
@@ -166,14 +220,14 @@ main:
 		cout << "9 >> Back" << endl;
 		cout << "Enter your choice: ";
 		cin >> Choice;
-
+		if (check(cin)) goto f;
 		switch (Choice) {
 		case 1:
-			prototype.type = notifications[7];
+			prototype.type = notifications[6];
 			addDenunction(file, prototype);
 			break;
 		case 2:
-			prototype.type = notifications[8];
+			prototype.type = notifications[7];
 			addDenunction(file, prototype);
 			break;
 
@@ -187,7 +241,7 @@ main:
 		}
 		break;
 	case 4:
-		prototype.type = notifications[9];
+		prototype.type = notifications[8];
 	v:
 		int Choice2;
 		cout << "1 >> Pet Help " << endl;
@@ -195,14 +249,14 @@ main:
 		cout << "9 >> Back" << endl;
 		cout << "Enter your choice: ";
 		cin >> Choice2;
-
+		if (check(cin)) goto v;
 		switch (Choice2) {
 		case 1:
-			prototype.type = notifications[10];
+			prototype.type = notifications[9];
 			addDenunction(file, prototype);
 			break;
 		case 2:
-			prototype.type = notifications[11];
+			prototype.type = notifications[10];
 			addDenunction(file, prototype);
 			break;
 		case 9:
@@ -216,15 +270,18 @@ main:
 		break;
 	case 5:
 		int id;
+	update:
 		cout << "Enter ID : ";
 		cin >> id;
+		if (check(cin)) goto update;
 		update(id);
 		break;
 	case 6:
+	deleteOpr:
 		cout << "Enter ID : ";
 		cin >> id;
+		if (check(cin)) goto deleteOpr;
 		deleteFunction(id);
-		cout << "Denunction is deleted.";
 		break;
 	case 9:
 		return 0;
@@ -312,23 +369,32 @@ void display_data()
 void deleteFunction(int id) {
 	readData();
 	ofstream data;
+	int count = 0;
 	data.open("data.csv", ios::out);
 	data << "ID" << ";" << "Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
 	for (unsigned int i = 0; i < general.size(); i++) {
 		if (id == general[i].id) {
+			fstream ids("ids.csv", ios::out | ios::app);
+			ids << id << endl;
+			ids.close();
+			cout << "Denunction is deleted.";
 			continue;
 		}
-		data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
+		else {
+			data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
+			count++;
+			if (count == general.size()) {
+				cout << "There is no any denunction in this ID." << endl;
+			}
+		}
 	}
-	fstream ids("ids.csv", ios::out | ios::app);
-	ids << id << endl;
-	ids.close();
 	data.close();
 }
 
 int update(int id) {
 	readData();
 	fstream data;
+	int count = 0;
 	data.open("data.csv", ios::out);
 	data << "ID" << ";" << "Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
 	for (unsigned int i = 0; i < general.size(); i++) {
@@ -345,6 +411,7 @@ int update(int id) {
 			cout << "Enter your choice: ";
 
 			cin >> choice;
+			if (check(cin)) goto main;
 
 			information prototype;
 
@@ -360,6 +427,8 @@ int update(int id) {
 				cout << "9 >> Back" << endl;
 				cout << "Enter your choice: ";
 				cin >> Choice1;
+
+				if (check(cin)) goto e;
 				switch (Choice1) {
 				case 1:
 					prototype.type = notifications[1];
@@ -390,12 +459,53 @@ int update(int id) {
 				}
 				break;
 			case 2:
-				prototype.type = notifications[5];
-				prototype.id = id;
-				updateDenunction(data, prototype);
+				prototype.type = notifications[11];   //Buraya ekleme yap Police department
+			h:
+				int Choice3;
+				cout << "1 >> Traffic Rule Violations " << endl;
+				cout << "2 >> Missing Person Reports" << endl;
+				cout << "3 >> Public Securities" << endl;
+				cout << "4 >> Anti-narcotics Crimes" << endl;
+				cout << "9 >> Back" << endl;
+				cout << "Enter your choice: ";
+				cin >> Choice3;
+				if (check(cin)) goto h;
+
+				switch (Choice3) {
+				case 1:
+					prototype.type = notifications[12];
+					prototype.id = id;
+					updateDenunction(data, prototype);
+					break;
+				case 2:
+					prototype.type = notifications[13];
+					prototype.id = id;
+					updateDenunction(data, prototype);
+					break;
+				case 3:
+					prototype.type = notifications[14];
+					prototype.id = id;
+					updateDenunction(data, prototype);
+					break;
+				case 4:
+					prototype.type = notifications[15];
+					prototype.id = id;
+					updateDenunction(data, prototype);
+					break;
+				case 9:
+					goto main;
+					break;
+				default:
+					cout << "Invalid Choice\n";
+					cout << "Try again...........\n\n";
+					goto h;
+				}
+				break;
+
+
 				break;
 			case 3:
-				prototype.type = notifications[2];
+				prototype.type = notifications[5];
 			f:
 				int Choice;
 				cout << "1 >> Emergency Fire Notification " << endl;
@@ -403,15 +513,16 @@ int update(int id) {
 				cout << "9 >> Back" << endl;
 				cout << "Enter your choice: ";
 				cin >> Choice;
+				if (check(cin)) goto f;
 
 				switch (Choice) {
 				case 1:
-					prototype.type = notifications[7];
+					prototype.type = notifications[6];
 					prototype.id = id;
 					updateDenunction(data, prototype);
 					break;
 				case 2:
-					prototype.type = notifications[8];
+					prototype.type = notifications[7];
 					prototype.id = id;
 					updateDenunction(data, prototype);
 					break;
@@ -433,14 +544,15 @@ int update(int id) {
 				cout << "9 >> Back" << endl;
 				cout << "Enter your choice: ";
 				cin >> Choice2;
+				if (check(cin)) goto v;
 				switch (Choice2) {
 				case 1:
-					prototype.type = notifications[10];
+					prototype.type = notifications[9];
 					prototype.id = id;
 					updateDenunction(data, prototype);
 					break;
 				case 2:
-					prototype.type = notifications[11];
+					prototype.type = notifications[10];
 					prototype.id = id;
 					updateDenunction(data, prototype);
 					break;
@@ -460,8 +572,11 @@ int update(int id) {
 				goto main;
 			}
 		}
-
 		else
 			data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
+		count++;
+		if (count == general.size()) {
+			cout << "There is no any denunction in this ID." << endl;
+		}
 	}
 }
