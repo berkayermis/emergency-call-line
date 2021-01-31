@@ -1,9 +1,11 @@
-
 //Names: Ýlknur Akçay - Merve zehra Peru - Muhammed Berkay Ermiþ
 //
 //Course: Programming for Engineering Project 2021
 //
-//Purpose: A program that allows you to achieve these emergencies together when emergencies occur.
+//Purpose:The aim of this project is to reduce the emergency lines 
+//to a single line to prevent confusion and ease the situation.
+//Notifications are saved when the necessary information
+//is entered by the user into the program.
 
 #include <iostream>
 #include <fstream>
@@ -57,9 +59,9 @@ int update(int, string);
 void updateDenunction(fstream&, information);
 bool check(istream&);
 
-/*
+/* -------------------------------------------------------------
 	Main function consists all departments processes itself
-*/
+----------------------------------------------------------------*/
 int main()
 {
 	/*
@@ -75,7 +77,11 @@ int main()
 
 	return 0;
 }
-
+//------------------------------------------------------------------
+//This function checks whether people are entering numbers or letters
+//param :(input)
+// input(cin)
+//------------------------------------------------------------------
 bool check(istream& cin) {
 	while (cin.fail()) {
 		cout << "Invalid number" << endl << endl;
@@ -85,7 +91,10 @@ bool check(istream& cin) {
 	}
 	return false;
 }
-
+//------------------------------------------------------------------
+//This function provide to add denunction.
+//param :(output,input)
+//------------------------------------------------------------------
 void addDenunction(fstream& file, information prototype) {
 	cout << prototype.type << endl;
 	cout << "Address: ";
@@ -98,7 +107,10 @@ void addDenunction(fstream& file, information prototype) {
 	cout << "Your ID is " << prototype.id;
 	file << prototype.id << ';' << prototype.type << ';' << prototype.address << ';' << prototype.detail << ';' << prototype.name << endl;
 }
-
+//------------------------------------------------------------------
+//This function allows to receive new information from the user when an update is requested.
+//param:(output,input)
+//------------------------------------------------------------------
 void updateDenunction(fstream& file, information prototype) {
 	cout << "Address: ";
 	getline(cin >> ws, prototype.address);
@@ -108,7 +120,10 @@ void updateDenunction(fstream& file, information prototype) {
 	file << prototype.id << ';' << prototype.type << ';' << prototype.address << ';' << prototype.detail << ';' << prototype.name << endl;
 }
 
-// ADD function allows user to add a new denunciation to Emergency Call System
+//------------------------------------------------------------------
+//This function is where functions such as adding, deleting, updating notification are selected.
+//param:(output)
+//------------------------------------------------------------------
 int specifyDenunction(fstream& file) {
 
 main:
@@ -124,11 +139,15 @@ main:
 	cout << "Enter your choice: ";
 
 	cin >> choice;
+	//If the value received from the user is not a number, the code returns to the main part
 	if (check(cin)) goto main;
 	information prototype;
 
+	//If the value received from the user matches the numbers in the menu, 
+	//it is directed to the relevant section with the help of the "switch case"
 	switch (choice) {
 	case 1:
+		//Emergency Department
 		prototype.type = notifications[0];
 	e:
 		int Choice1;
@@ -169,6 +188,7 @@ main:
 		addDenunction(file, prototype);
 		break;
 	case 2:
+		//Police Department
 		prototype.type = notifications[11];
 	a:
 		int Choice3;
@@ -209,6 +229,7 @@ main:
 		addDenunction(file, prototype);
 		break;
 	case 3:
+		//Fire Department
 		prototype.type = notifications[5];
 	f:
 		int Choice;
@@ -238,6 +259,7 @@ main:
 		}
 		break;
 	case 4:
+		//Veterinary Department
 		prototype.type = notifications[8];
 	v:
 		int Choice2;
@@ -266,6 +288,7 @@ main:
 		}
 		break;
 	case 5: {
+		//Update denunction
 		int id;
 		string testName;
 	upd:
@@ -278,6 +301,7 @@ main:
 		break;
 	}
 	case 6: {
+		//Delete denunction
 		int id;
 		string testName;
 	deleteOpr:
@@ -290,6 +314,7 @@ main:
 		break;
 	}
 	case 9:
+		//Back
 		return 0;
 	default:
 		cout << "Invalid Choice\n";
@@ -297,7 +322,10 @@ main:
 		goto main;
 	}
 }
-
+//------------------------------------------------------------------
+//This function allows to generate personalized id numbers.
+//param:()
+//------------------------------------------------------------------
 int idCreator() {
 	fstream file("ids.csv", ios::in);
 	string line;
@@ -308,11 +336,15 @@ int idCreator() {
 
 		idStr.push_back(tempID);
 	}
+	//The last number in the idStr vector is assigned to value.
 	int value = idStr.back();
+	//The last number assigned to value is removed from the vector.
 	idStr.pop_back();
+	//Numbers in id.svc is deleted.
 	file.clear();
 	file.close();
 	file.open("ids.csv", ios::out);
+	//Remaining values in vector are added to id file
 	for (int i = 0; i < idStr.size(); i++) {
 
 		file << idStr.at(i) << endl;
@@ -320,7 +352,11 @@ int idCreator() {
 	file.close();
 	return value;
 }
-
+//------------------------------------------------------------------
+//This method allows the information to be kept update inside an temporary information struct object
+//and add those object’s datas into a general vector to use later by another functions itself
+//param:()
+//------------------------------------------------------------------
 void readData()
 {
 
@@ -332,11 +368,14 @@ void readData()
 		return;
 	}
 	string line;
+	//Each information types are sepeared by semicolon “;” because data.csv file is an excel file.
 	const char delim = ';';
+	//In each line, program creates an temporary denunction object as a name of tempDenunction
 	string T;
 	getline(file, line);
 	while (getline(file, line))
 	{
+		//Each line keeps itself inside istringstream feature as ssand this feature keeps those lines
 		istringstream ss(line);
 		information person;
 		string type;
@@ -358,7 +397,10 @@ void readData()
 
 	file.close();
 }
-
+//------------------------------------------------------------------
+//The function allows you to print data inside the file to console
+//param:()
+//------------------------------------------------------------------
 void display_data()
 {
 	readData();
@@ -369,7 +411,11 @@ void display_data()
 		<< setw(8) << general[i].detail
 		<< '\n';
 }
-
+//------------------------------------------------------------------
+//This function enables deletion of wrong notices.
+//This process is performed by controlling the ID number and name.
+//param:(input)
+//------------------------------------------------------------------
 void deleteFunction(int id, string name) {
 	readData();
 	ofstream data;
@@ -394,7 +440,11 @@ void deleteFunction(int id, string name) {
 	}
 	data.close();
 }
-
+//------------------------------------------------------------------
+//This function allows the user to change their information by checking their personal IDs.
+//After the ID and name are verified, the person is directed to the menu
+//param:(input,input)
+//------------------------------------------------------------------
 int update(int id, string name) {
 	readData();
 	fstream data;
@@ -402,6 +452,8 @@ int update(int id, string name) {
 	data.open("data.csv", ios::out);
 	data << "ID" << ";" << "Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
 	for (unsigned int i = 0; i < general.size(); i++) {
+		//It is checked whether the entered id is in data.csv or not and
+		//the name is also checked as the second control mechanism.
 		if (id == general[i].id && name == general[i].name) {
 		main:
 			int choice;
@@ -433,6 +485,7 @@ int update(int id, string name) {
 
 				if (check(cin)) goto e;
 				switch (Choice1) {
+					//Emergency Department
 				case 1:
 					prototype.type = notifications[1];
 					prototype.id = id;
@@ -466,7 +519,8 @@ int update(int id, string name) {
 				}
 				break;
 			case 2:
-				prototype.type = notifications[11];   //Buraya ekleme yap Police department
+				//Police Department
+				prototype.type = notifications[11];
 			h:
 				int Choice3;
 				cout << "1 >> Traffic Rule Violations " << endl;
@@ -516,6 +570,7 @@ int update(int id, string name) {
 
 				break;
 			case 3:
+				//Fire Department
 				prototype.type = notifications[5];
 			f:
 				int Choice;
@@ -549,6 +604,7 @@ int update(int id, string name) {
 				}
 				break;
 			case 4:
+				//Veterinary Department
 				prototype.type = notifications[9];
 			v:
 				int Choice2;
