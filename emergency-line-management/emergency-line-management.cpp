@@ -52,7 +52,7 @@ int idCreator();
 void readData();
 void display_data();
 void deleteFunction(int);
-int update(int);
+int update(int,information);
 void updateDenunction(fstream&, information);
 bool check(istream&);
 
@@ -273,8 +273,10 @@ main:
 	update:
 		cout << "Enter ID : ";
 		cin >> id;
+		cout << "Enter name : ";
+		cin >>prototype.name;
 		if (check(cin)) goto update;
-		update(id);
+		update(id,prototype);
 		break;
 	case 6:
 	deleteOpr:
@@ -391,7 +393,7 @@ void deleteFunction(int id) {
 	data.close();
 }
 
-int update(int id) {
+int update(int id,information prototype) {
 	readData();
 	fstream data;
 	int count = 0;
@@ -399,177 +401,189 @@ int update(int id) {
 	data << "ID" << ";" << "Type" << ";" << "Address" << ";" << "Detail" << ";" << "Name" << endl;
 	for (unsigned int i = 0; i < general.size(); i++) {
 		if (id == general[i].id) {
+			if (prototype.name == general[i].name) {
 
-		main:
-			int choice;
-			cout << "Change denunction type" << endl;
-			cout << "1 >> Emergency Department" << endl;
-			cout << "2 >> Police Department" << endl;
-			cout << "3 >> Fire Department" << endl;
-			cout << "4 >> Veterinary Service" << endl;
-			cout << "9 >> Exit Program" << endl << endl;
-			cout << "Enter your choice: ";
-
-			cin >> choice;
-			if (check(cin)) goto main;
-
-			information prototype;
-
-			switch (choice) {
-			case 1:
-			e:
-				prototype.type = notifications[0];
-				int Choice1;
-				cout << "1 >> Traffic Accident Notification " << endl;
-				cout << "2 >> Home Accident Notification" << endl;
-				cout << "3 >> Work Accident Notification" << endl;
-				cout << "4 >> Others " << endl;
-				cout << "9 >> Back" << endl;
+			main:
+				int choice;
+				cout << "Change denunction type" << endl;
+				cout << "1 >> Emergency Department" << endl;
+				cout << "2 >> Police Department" << endl;
+				cout << "3 >> Fire Department" << endl;
+				cout << "4 >> Veterinary Service" << endl;
+				cout << "9 >> Exit Program" << endl << endl;
 				cout << "Enter your choice: ";
-				cin >> Choice1;
 
-				if (check(cin)) goto e;
-				switch (Choice1) {
+				cin >> choice;
+				if (check(cin)) goto main;
+
+				information prototype;
+
+				switch (choice) {
 				case 1:
-					prototype.type = notifications[1];
-					prototype.id = id;
-					updateDenunction(data, prototype);
+				e:
+					prototype.type = notifications[0];
+					int Choice1;
+					cout << "1 >> Traffic Accident Notification " << endl;
+					cout << "2 >> Home Accident Notification" << endl;
+					cout << "3 >> Work Accident Notification" << endl;
+					cout << "4 >> Others " << endl;
+					cout << "9 >> Back" << endl;
+					cout << "Enter your choice: ";
+					cin >> Choice1;
+
+					if (check(cin)) goto e;
+					switch (Choice1) {
+					case 1:
+						prototype.type = notifications[1];
+						prototype.id = id;
+						prototype.name = general[i].name;
+						updateDenunction(data, prototype);
+						break;
+					case 2:
+						prototype.type = notifications[2];
+						prototype.id = id;
+						prototype.name = general[i].name;
+						updateDenunction(data, prototype);
+						break;
+					case 3:
+						prototype.type = notifications[3];
+						prototype.id = id;
+						prototype.name = general[i].name;
+						updateDenunction(data, prototype);
+						break;
+					case 4:
+						prototype.type = notifications[4];
+						prototype.id = id;
+						prototype.name = general[i].name;
+						updateDenunction(data, prototype);
+						break;
+					case 9:
+						goto main;
+					default:
+						cout << "Invalid Choice\n";
+						cout << "Try again...........\n\n";
+						goto e;
+					}
 					break;
 				case 2:
-					prototype.type = notifications[2];
-					prototype.id = id;
-					updateDenunction(data, prototype);
+					prototype.type = notifications[11];   //Buraya ekleme yap Police department
+				h:
+					int Choice3;
+					cout << "1 >> Traffic Rule Violations " << endl;
+					cout << "2 >> Missing Person Reports" << endl;
+					cout << "3 >> Public Securities" << endl;
+					cout << "4 >> Anti-narcotics Crimes" << endl;
+					cout << "9 >> Back" << endl;
+					cout << "Enter your choice: ";
+					cin >> Choice3;
+					if (check(cin)) goto h;
+
+					switch (Choice3) {
+					case 1:
+						prototype.type = notifications[12];
+						prototype.id = id;
+						updateDenunction(data, prototype);
+						break;
+					case 2:
+						prototype.type = notifications[13];
+						prototype.id = id;
+						updateDenunction(data, prototype);
+						break;
+					case 3:
+						prototype.type = notifications[14];
+						prototype.id = id;
+						updateDenunction(data, prototype);
+						break;
+					case 4:
+						prototype.type = notifications[15];
+						prototype.id = id;
+						updateDenunction(data, prototype);
+						break;
+					case 9:
+						goto main;
+						break;
+					default:
+						cout << "Invalid Choice\n";
+						cout << "Try again...........\n\n";
+						goto h;
+					}
+					break;
+
+
 					break;
 				case 3:
-					prototype.type = notifications[3];
-					prototype.id = id;
-					updateDenunction(data, prototype);
+					prototype.type = notifications[5];
+				f:
+					int Choice;
+					cout << "1 >> Emergency Fire Notification " << endl;
+					cout << "2 >> Forest Fire Notification" << endl;
+					cout << "9 >> Back" << endl;
+					cout << "Enter your choice: ";
+					cin >> Choice;
+					if (check(cin)) goto f;
+
+					switch (Choice) {
+					case 1:
+						prototype.type = notifications[6];
+						prototype.id = id;
+						updateDenunction(data, prototype);
+						break;
+					case 2:
+						prototype.type = notifications[7];
+						prototype.id = id;
+						updateDenunction(data, prototype);
+						break;
+					case 9:
+						goto main;
+						break;
+					default:
+						cout << "Invalid Choice\n";
+						cout << "Try again...........\n\n";
+						goto f;
+					}
 					break;
 				case 4:
-					prototype.type = notifications[4];
-					prototype.id = id;
-					updateDenunction(data, prototype);
-					break;
-				case 9:
-					goto main;
-				default:
-					cout << "Invalid Choice\n";
-					cout << "Try again...........\n\n";
-					goto e;
-				}
-				break;
-			case 2:
-				prototype.type = notifications[11];   //Buraya ekleme yap Police department
-			h:
-				int Choice3;
-				cout << "1 >> Traffic Rule Violations " << endl;
-				cout << "2 >> Missing Person Reports" << endl;
-				cout << "3 >> Public Securities" << endl;
-				cout << "4 >> Anti-narcotics Crimes" << endl;
-				cout << "9 >> Back" << endl;
-				cout << "Enter your choice: ";
-				cin >> Choice3;
-				if (check(cin)) goto h;
-
-				switch (Choice3) {
-				case 1:
-					prototype.type = notifications[12];
-					prototype.id = id;
-					updateDenunction(data, prototype);
-					break;
-				case 2:
-					prototype.type = notifications[13];
-					prototype.id = id;
-					updateDenunction(data, prototype);
-					break;
-				case 3:
-					prototype.type = notifications[14];
-					prototype.id = id;
-					updateDenunction(data, prototype);
-					break;
-				case 4:
-					prototype.type = notifications[15];
-					prototype.id = id;
-					updateDenunction(data, prototype);
-					break;
-				case 9:
-					goto main;
-					break;
-				default:
-					cout << "Invalid Choice\n";
-					cout << "Try again...........\n\n";
-					goto h;
-				}
-				break;
-
-
-				break;
-			case 3:
-				prototype.type = notifications[5];
-			f:
-				int Choice;
-				cout << "1 >> Emergency Fire Notification " << endl;
-				cout << "2 >> Forest Fire Notification" << endl;
-				cout << "9 >> Back" << endl;
-				cout << "Enter your choice: ";
-				cin >> Choice;
-				if (check(cin)) goto f;
-
-				switch (Choice) {
-				case 1:
-					prototype.type = notifications[6];
-					prototype.id = id;
-					updateDenunction(data, prototype);
-					break;
-				case 2:
-					prototype.type = notifications[7];
-					prototype.id = id;
-					updateDenunction(data, prototype);
-					break;
-				case 9:
-					goto main;
-					break;
-				default:
-					cout << "Invalid Choice\n";
-					cout << "Try again...........\n\n";
-					goto f;
-				}
-				break;
-			case 4:
-				prototype.type = notifications[9];
-			v:
-				int Choice2;
-				cout << "1 >> Pet Help " << endl;
-				cout << "2 >> Street Animals Help" << endl;
-				cout << "9 >> Back" << endl;
-				cout << "Enter your choice: ";
-				cin >> Choice2;
-				if (check(cin)) goto v;
-				switch (Choice2) {
-				case 1:
 					prototype.type = notifications[9];
-					prototype.id = id;
-					updateDenunction(data, prototype);
-					break;
-				case 2:
-					prototype.type = notifications[10];
-					prototype.id = id;
-					updateDenunction(data, prototype);
+				v:
+					int Choice2;
+					cout << "1 >> Pet Help " << endl;
+					cout << "2 >> Street Animals Help" << endl;
+					cout << "9 >> Back" << endl;
+					cout << "Enter your choice: ";
+					cin >> Choice2;
+					if (check(cin)) goto v;
+					switch (Choice2) {
+					case 1:
+						prototype.type = notifications[9];
+						prototype.id = id;
+						updateDenunction(data, prototype);
+						break;
+					case 2:
+						prototype.type = notifications[10];
+						prototype.id = id;
+						updateDenunction(data, prototype);
+						break;
+					case 9:
+						goto main;
+					default:
+						cout << "Invalid Choice\n";
+						cout << "Try again...........\n\n";
+						goto v;
+					}
 					break;
 				case 9:
-					goto main;
+					return 0;
 				default:
 					cout << "Invalid Choice\n";
 					cout << "Try again...........\n\n";
-					goto v;
+					goto main;
 				}
-				break;
-			case 9:
-				return 0;
-			default:
-				cout << "Invalid Choice\n";
-				cout << "Try again...........\n\n";
-				goto main;
+			}
+			else
+			data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
+			count++;
+			if (count == general.size()) {
+				cout << "name-id did not match." << endl;
 			}
 		}
 		else
