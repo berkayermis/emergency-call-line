@@ -208,8 +208,6 @@ main:
 			goto e;
 		}
 		break;
-		addDenunction(file, prototype);
-		break;
 	case 2:
 		//Police Department
 		prototype.type = notifications[11];
@@ -248,8 +246,6 @@ main:
 			cout << "Try again...........\n\n";
 			goto a;
 		}
-		break;
-		addDenunction(file, prototype);
 		break;
 	case 3:
 		//Fire Department
@@ -388,7 +384,6 @@ param:()
 */
 void readData()
 {
-
 	fstream file;
 	file.open("data.csv");
 	if (!file)
@@ -462,7 +457,7 @@ void deleteFunction(int id, string name) {
 			fstream ids("ids.csv", ios::out | ios::app);
 			ids << id << endl;
 			ids.close();
-			cout << "Denunction is deleted.";
+			cout << "Denunction was deleted.";
 			continue;
 		}
 		else {
@@ -677,6 +672,7 @@ int update(int id, string name) {
 				}
 				break;
 			case 9:
+				data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
 				return 0;
 			default:
 				cout << "Invalid Choice\n";
