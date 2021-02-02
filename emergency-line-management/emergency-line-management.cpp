@@ -63,7 +63,7 @@ int idCreator();
 void readData();
 void display_data();
 void deleteFunction(int, string);
-int update(int, string);
+void update(int, string);
 void updateDenunction(fstream&, information);
 bool check(istream&);
 
@@ -478,7 +478,7 @@ After the ID and name are verified, the person is directed to the menu
 param:(input,input)
 ------------------------------------------------------------------
 */
-int update(int id, string name) {
+void update(int id, string name) {
 	readData();
 	fstream data;
 	int count = 0;
@@ -673,7 +673,7 @@ int update(int id, string name) {
 				break;
 			case 9:
 				data << general[i].id << ";" << general[i].type << ";" << general[i].address << ";" << general[i].detail << ";" << general[i].name << endl;
-				return 0;
+				break;
 			default:
 				cout << "Invalid Choice\n";
 				cout << "Try again...........\n\n";
